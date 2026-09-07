@@ -1,0 +1,9 @@
+/*
+  Tailwind is imported WITHOUT preflight (its base reset) on purpose.
+  Bootstrap's Reboot (imported in main.js) is the single CSS reset in
+  this project, so we don't get two resets fighting each other.
+  Tailwind's utility classes work exactly the same either way.
+*/
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
