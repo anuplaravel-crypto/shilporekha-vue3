@@ -36,6 +36,23 @@
     text-decoration: none;
   }
 
+  /* Tailwind's Preflight resets list markers; since we skip it, do the
+     same ourselves — otherwise <ul>/<ol> show native bullets/numbers. */
+  ul,
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Preflight also makes img/svg block-level — inline default leaves a
+     few px of whitespace underneath (baseline alignment), a classic gap. */
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
   .text-offset {
     text-shadow: 5px 5px 0 rgba(10, 10, 10, 0.12);
   }
@@ -46,6 +63,55 @@
   .card-hover:hover {
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0 rgba(10, 10, 10, 0.9);
+  }
+}
+
+@layer components {
+  /* Admin sidebar nav links */
+  .nav-link.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-left: 2px solid var(--color-accent);
+  }
+  .nav-link:not(.active):hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Admin data-table row hover */
+  .card-row:hover {
+    background: #fafaf9;
+  }
+
+  /* Admin toggle switch (Pricing "most popular", Testimonials "featured") */
+  .switch {
+    width: 36px;
+    height: 20px;
+    border-radius: 999px;
+    background: #e5e5e2;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    flex-shrink: 0;
+    border: none;
+    padding: 0;
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: #fff;
+    transition: transform 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+  .switch.on {
+    background: var(--color-ink);
+  }
+  .switch.on::after {
+    transform: translateX(16px);
   }
 }
 
