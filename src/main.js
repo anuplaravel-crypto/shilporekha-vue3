@@ -1,11 +1,10 @@
+// Bootstrap's CSS, BootstrapVueNext's CSS, and Tailwind are all imported
+// from main.css using explicit CSS layers, so cascade priority is
+// unambiguous instead of depending on import order. Only BootstrapVueNext
+// components should be used — never Bootstrap's grid/utility classes
+// (.container, .row, .btn, .card, etc.) — Tailwind owns all
+// layout/spacing/typography.
 import './assets/main.css'
-
-// Bootstrap's own CSS (Reboot + component styles) and BootstrapVueNext's
-// supplementary component styles. Only BootstrapVueNext components should
-// be used from these — never Bootstrap's grid/utility classes (.container,
-// .row, .btn, .card, etc.) — Tailwind owns all layout/spacing/typography.
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

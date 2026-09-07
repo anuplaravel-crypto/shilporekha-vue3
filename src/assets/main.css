@@ -1,9 +1,55 @@
 /*
-  Tailwind is imported WITHOUT preflight (its base reset) on purpose.
-  Bootstrap's Reboot (imported in main.js) is the single CSS reset in
-  this project, so we don't get two resets fighting each other.
-  Tailwind's utility classes work exactly the same either way.
+  Everything below is loaded through explicit CSS layers so priority is
+  unambiguous regardless of import order: bootstrap < theme < base <
+  components < utilities. Bootstrap's Reboot (a full reset that also
+  styles plain <a> tags blue+underlined, unlike Tailwind's neutral
+  Preflight) sits lowest, so our own "base" rules below — and any
+  Tailwind utility class applied directly to an element — always win
+  over it. Tailwind's own Preflight is skipped entirely (only
+  theme.css + utilities.css are imported) since Bootstrap's Reboot is
+  already our one reset; running both would fight each other.
 */
-@layer theme, base, components, utilities;
+@layer bootstrap, theme, base, components, utilities;
+
+@import 'bootstrap/dist/css/bootstrap.css' layer(bootstrap);
+@import 'bootstrap-vue-next/dist/bootstrap-vue-next.css' layer(bootstrap);
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+  --color-ink: #0a0a0a;
+  --color-paper: #faf9f6;
+  --color-accent: #ff4d2e;
+  --font-display: 'Anton', sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  /* Neutralize Bootstrap's default blue+underlined <a> styling. */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .text-offset {
+    text-shadow: 5px 5px 0 rgba(10, 10, 10, 0.12);
+  }
+
+  .card-hover {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .card-hover:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(10, 10, 10, 0.9);
+  }
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
