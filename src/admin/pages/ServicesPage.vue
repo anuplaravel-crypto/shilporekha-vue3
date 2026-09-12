@@ -95,7 +95,7 @@ onMounted(() => store.fetchAll())
         >
           <th class="text-left px-5 py-3 font-medium">Service</th>
           <th class="text-left px-5 py-3 font-medium">Status</th>
-          <th class="text-left px-5 py-3 font-medium">Subcategories</th>
+          <th class="text-left px-5 py-3 font-medium">Categories</th>
           <th class="text-left px-5 py-3 font-medium">Actions</th>
         </tr>
       </thead>
@@ -134,7 +134,7 @@ onMounted(() => store.fetchAll())
                 {{ service.status === 'active' ? 'Active' : 'Coming Soon' }}
               </button>
             </td>
-            <td class="px-5 py-3.5 text-ink/50">{{ service.subcategories.length }}</td>
+            <td class="px-5 py-3.5 text-ink/50">{{ service.categories.length }}</td>
             <td class="px-5 py-3.5">
               <div class="flex gap-3 text-xs font-semibold">
                 <button type="button" class="hover:underline" @click="openEditModal(service)">
@@ -154,17 +154,17 @@ onMounted(() => store.fetchAll())
             <td colspan="4" class="px-5 pl-12 py-4">
               <div class="flex flex-wrap gap-2">
                 <span
-                  v-for="sub in service.subcategories"
-                  :key="sub.id"
+                  v-for="category in service.categories"
+                  :key="category.id"
                   class="text-xs border border-gray-300 bg-white px-3 py-1.5"
-                  >{{ sub.name }}</span
+                  >{{ category.name }}</span
                 >
-                <button
+                <RouterLink
+                  :to="{ name: 'admin-products' }"
                   class="text-xs border border-dashed border-ink px-3 py-1.5 font-medium hover:bg-ink hover:text-paper transition-colors"
-                  title="Subcategory management is coming soon"
                 >
-                  + Add Subcategory
-                </button>
+                  Manage in Products →
+                </RouterLink>
               </div>
             </td>
           </tr>
@@ -174,8 +174,8 @@ onMounted(() => store.fetchAll())
   </div>
 
   <p class="text-xs text-ink/40">
-    Click a service name to expand its subcategories. Click the status badge to toggle Active /
-    Coming Soon.
+    Click a service name to expand its categories. Click the status badge to toggle Active / Coming
+    Soon.
   </p>
 
   <BModal v-model="showModal" :title="editingService ? 'Edit Service' : 'Add Service'" no-footer>
