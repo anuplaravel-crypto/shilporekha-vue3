@@ -9,6 +9,7 @@ const navLinks = [
   { to: { name: 'admin-services' }, label: 'Services', icon: 'tshirt' },
   { to: { name: 'admin-products' }, label: 'Products', icon: 'box' },
   { to: { name: 'admin-categories' }, label: 'Categories', icon: 'layers' },
+  { to: { name: 'admin-subcategories' }, label: 'Subcategories', icon: 'list' },
   { to: { name: 'admin-styles' }, label: 'Styles', icon: 'palette' },
   { to: { name: 'admin-portfolio' }, label: 'Portfolio', icon: 'image' },
   { to: { name: 'admin-pricing' }, label: 'Pricing', icon: 'tag' },
@@ -87,6 +88,22 @@ const navLinks = [
           <polygon points="12 2 2 7 12 12 22 7 12 2" />
           <polyline points="2 17 12 22 22 17" />
           <polyline points="2 12 12 17 22 12" />
+        </svg>
+        <svg
+          v-else-if="link.icon === 'list'"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        >
+          <line x1="8" y1="6" x2="21" y2="6" />
+          <line x1="8" y1="12" x2="21" y2="12" />
+          <line x1="8" y1="18" x2="21" y2="18" />
+          <line x1="3" y1="6" x2="3.01" y2="6" />
+          <line x1="3" y1="12" x2="3.01" y2="12" />
+          <line x1="3" y1="18" x2="3.01" y2="18" />
         </svg>
         <svg
           v-else-if="link.icon === 'palette'"

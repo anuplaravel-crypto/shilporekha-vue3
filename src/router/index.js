@@ -77,6 +77,12 @@ const router = createRouter({
           meta: { title: 'Categories & Subcategories' },
         },
         {
+          path: 'subcategories',
+          name: 'admin-subcategories',
+          component: () => import('@/admin/pages/SubcategoriesPage.vue'),
+          meta: { title: 'Subcategories' },
+        },
+        {
           path: 'styles',
           name: 'admin-styles',
           component: () => import('@/admin/pages/StylesPage.vue'),
