@@ -41,6 +41,12 @@ const router = createRouter({
       meta: { title: 'Log In' },
     },
     {
+      path: '/admin/registration',
+      name: 'admin-registration',
+      component: () => import('@/admin/pages/RegisterPage.vue'),
+      meta: { title: 'Register' },
+    },
+    {
       path: '/admin',
       component: AdminLayout,
       meta: { requiresAuth: true },

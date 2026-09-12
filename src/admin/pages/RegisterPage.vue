@@ -1,24 +1,31 @@
 <script setup>
 import { reactive, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
-const route = useRoute()
 const auth = useAuthStore()
 
-const form = reactive({ email: '', password: '' })
+const form = reactive({ name: '', email: '', password: '', passwordConfirmation: '' })
 const errorMessage = ref('')
+const fieldErrors = ref({})
 const submitting = ref(false)
 
 async function onSubmit() {
   errorMessage.value = ''
+  fieldErrors.value = {}
   submitting.value = true
   try {
-    await auth.login(form.email, form.password)
-    router.push(route.query.redirect ?? { name: 'admin-dashboard' })
+    await auth.register(form.name, form.email, form.password, form.passwordConfirmation)
+    router.push({ name: 'admin-dashboard' })
   } catch (error) {
-    errorMessage.value = error.response?.data?.message || 'Something went wrong. Please try again.'
+    if (error.response?.status === 422) {
+      fieldErrors.value = error.response.data.errors ?? {}
+      errorMessage.value = error.response.data.message
+    } else {
+      errorMessage.value =
+        error.response?.data?.message || 'Something went wrong. Please try again.'
+    }
   } finally {
     submitting.value = false
   }
@@ -44,6 +51,17 @@ async function onSubmit() {
           {{ errorMessage }}
         </div>
         <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold uppercase tracking-wide text-ink/60">Name</label>
+          <input
+            v-model="form.name"
+            type="text"
+            required
+            class="border border-gray-300 h-11 px-3 text-sm focus:outline-none focus:border-ink"
+            placeholder="Your name"
+          />
+          <p v-if="fieldErrors.name" class="text-xs text-red-600">{{ fieldErrors.name[0] }}</p>
+        </div>
+        <div class="flex flex-col gap-1.5">
           <label class="text-xs font-semibold uppercase tracking-wide text-ink/60">Email</label>
           <input
             v-model="form.email"
@@ -52,6 +70,7 @@ async function onSubmit() {
             class="border border-gray-300 h-11 px-3 text-sm focus:outline-none focus:border-ink"
             placeholder="you@cottonandink.studio"
           />
+          <p v-if="fieldErrors.email" class="text-xs text-red-600">{{ fieldErrors.email[0] }}</p>
         </div>
         <div class="flex flex-col gap-1.5">
           <label class="text-xs font-semibold uppercase tracking-wide text-ink/60">Password</label>
@@ -59,6 +78,23 @@ async function onSubmit() {
             v-model="form.password"
             type="password"
             required
+            minlength="8"
+            class="border border-gray-300 h-11 px-3 text-sm focus:outline-none focus:border-ink"
+            placeholder="••••••••"
+          />
+          <p v-if="fieldErrors.password" class="text-xs text-red-600">
+            {{ fieldErrors.password[0] }}
+          </p>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold uppercase tracking-wide text-ink/60"
+            >Confirm Password</label
+          >
+          <input
+            v-model="form.passwordConfirmation"
+            type="password"
+            required
+            minlength="8"
             class="border border-gray-300 h-11 px-3 text-sm focus:outline-none focus:border-ink"
             placeholder="••••••••"
           />
@@ -68,19 +104,14 @@ async function onSubmit() {
           :disabled="submitting"
           class="bg-ink text-paper text-center text-sm font-semibold uppercase tracking-wide py-3 hover:bg-accent transition-colors disabled:opacity-50"
         >
-          {{ submitting ? 'Logging in…' : 'Log In' }}
+          {{ submitting ? 'Creating account…' : 'Register' }}
         </button>
-        <a href="#" class="text-center text-xs text-ink/50 hover:text-ink underline"
-          >Forgot password?</a
-        >
       </form>
 
       <div class="text-center text-xs text-ink/40">
-        Need an account?
-        <RouterLink
-          :to="{ name: 'admin-registration' }"
-          class="text-ink underline hover:text-accent"
-          >Register</RouterLink
+        Already have an account?
+        <RouterLink :to="{ name: 'admin-login' }" class="text-ink underline hover:text-accent"
+          >Log In</RouterLink
         >
       </div>
     </div>

@@ -9,6 +9,19 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const checked = ref(false)
 
+  async function register(name, email, password, passwordConfirmation) {
+    await getCsrfCookie()
+    const { data } = await api.post('/api/register', {
+      name,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+    })
+    user.value = data.data
+    checked.value = true
+    return user.value
+  }
+
   async function login(email, password) {
     await getCsrfCookie()
     const { data } = await api.post('/api/login', { email, password })
@@ -36,5 +49,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { user, checked, login, logout, fetchMe }
+  return { user, checked, register, login, logout, fetchMe }
 })
