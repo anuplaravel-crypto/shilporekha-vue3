@@ -160,10 +160,10 @@ onMounted(() => store.fetchAll())
                   >{{ category.name }}</span
                 >
                 <RouterLink
-                  :to="{ name: 'admin-products' }"
+                  :to="{ name: 'admin-categories' }"
                   class="text-xs border border-dashed border-ink px-3 py-1.5 font-medium hover:bg-ink hover:text-paper transition-colors"
                 >
-                  Manage in Products →
+                  Manage in Categories →
                 </RouterLink>
               </div>
             </td>

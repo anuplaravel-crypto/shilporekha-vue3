@@ -8,6 +8,8 @@ const navLinks = [
   { to: { name: 'admin-dashboard' }, label: 'Dashboard', icon: 'grid' },
   { to: { name: 'admin-services' }, label: 'Services', icon: 'tshirt' },
   { to: { name: 'admin-products' }, label: 'Products', icon: 'box' },
+  { to: { name: 'admin-categories' }, label: 'Categories', icon: 'layers' },
+  { to: { name: 'admin-styles' }, label: 'Styles', icon: 'palette' },
   { to: { name: 'admin-portfolio' }, label: 'Portfolio', icon: 'image' },
   { to: { name: 'admin-pricing' }, label: 'Pricing', icon: 'tag' },
   { to: { name: 'admin-orders' }, label: 'Orders', icon: 'inbox' },
@@ -72,6 +74,36 @@ const navLinks = [
           <path d="M21 8l-9-5-9 5 9 5 9-5z" />
           <path d="M3 8v8l9 5 9-5V8" />
           <path d="M12 13v8" />
+        </svg>
+        <svg
+          v-else-if="link.icon === 'layers'"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        >
+          <polygon points="12 2 2 7 12 12 22 7 12 2" />
+          <polyline points="2 17 12 22 22 17" />
+          <polyline points="2 12 12 17 22 12" />
+        </svg>
+        <svg
+          v-else-if="link.icon === 'palette'"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        >
+          <path
+            d="M12 2a10 10 0 1 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.3A5.2 5.2 0 0 0 22 12 10 10 0 0 0 12 2z"
+          />
+          <circle cx="7" cy="10" r="1" />
+          <circle cx="10" cy="6.5" r="1" />
+          <circle cx="15" cy="7" r="1" />
+          <circle cx="17" cy="11" r="1" />
         </svg>
         <svg
           v-else-if="link.icon === 'image'"
