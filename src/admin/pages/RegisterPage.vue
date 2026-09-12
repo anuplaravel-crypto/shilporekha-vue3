@@ -10,6 +10,8 @@ const form = reactive({ name: '', email: '', password: '', passwordConfirmation:
 const errorMessage = ref('')
 const fieldErrors = ref({})
 const submitting = ref(false)
+const showPassword = ref(false)
+const showPasswordConfirmation = ref(false)
 
 async function onSubmit() {
   errorMessage.value = ''
@@ -22,9 +24,13 @@ async function onSubmit() {
     if (error.response?.status === 422) {
       fieldErrors.value = error.response.data.errors ?? {}
       errorMessage.value = error.response.data.message
+    } else if (error.response) {
+      errorMessage.value = error.response.data?.message || 'Something went wrong. Please try again.'
     } else {
-      errorMessage.value =
-        error.response?.data?.message || 'Something went wrong. Please try again.'
+      // No response at all usually means the request never reached the
+      // server (CORS rejection, backend down, wrong API base URL) —
+      // worth telling apart from a real server-side failure.
+      errorMessage.value = 'Could not reach the server. Please check your connection and try again.'
     }
   } finally {
     submitting.value = false
@@ -74,14 +80,48 @@ async function onSubmit() {
         </div>
         <div class="flex flex-col gap-1.5">
           <label class="text-xs font-semibold uppercase tracking-wide text-ink/60">Password</label>
-          <input
-            v-model="form.password"
-            type="password"
-            required
-            minlength="8"
-            class="border border-gray-300 h-11 px-3 text-sm focus:outline-none focus:border-ink"
-            placeholder="••••••••"
-          />
+          <div class="relative">
+            <input
+              v-model="form.password"
+              :type="showPassword ? 'text' : 'password'"
+              required
+              minlength="8"
+              class="border border-gray-300 h-11 pl-3 pr-10 text-sm w-full focus:outline-none focus:border-ink"
+              placeholder="••••••••"
+            />
+            <button
+              type="button"
+              class="absolute inset-y-0 right-0 flex items-center px-3 text-ink/40 hover:text-ink"
+              :aria-label="showPassword ? 'Hide password' : 'Show password'"
+              @click="showPassword = !showPassword"
+            >
+              <svg
+                v-if="showPassword"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg
+                v-else
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.24 4.24M9.36 5.35A9.72 9.72 0 0 1 12 5c6.5 0 10 7 10 7a13.16 13.16 0 0 1-3.16 3.94M6.6 6.6C3.9 8.28 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 3.4-.6"
+                />
+              </svg>
+            </button>
+          </div>
           <p v-if="fieldErrors.password" class="text-xs text-red-600">
             {{ fieldErrors.password[0] }}
           </p>
@@ -90,14 +130,48 @@ async function onSubmit() {
           <label class="text-xs font-semibold uppercase tracking-wide text-ink/60"
             >Confirm Password</label
           >
-          <input
-            v-model="form.passwordConfirmation"
-            type="password"
-            required
-            minlength="8"
-            class="border border-gray-300 h-11 px-3 text-sm focus:outline-none focus:border-ink"
-            placeholder="••••••••"
-          />
+          <div class="relative">
+            <input
+              v-model="form.passwordConfirmation"
+              :type="showPasswordConfirmation ? 'text' : 'password'"
+              required
+              minlength="8"
+              class="border border-gray-300 h-11 pl-3 pr-10 text-sm w-full focus:outline-none focus:border-ink"
+              placeholder="••••••••"
+            />
+            <button
+              type="button"
+              class="absolute inset-y-0 right-0 flex items-center px-3 text-ink/40 hover:text-ink"
+              :aria-label="showPasswordConfirmation ? 'Hide password' : 'Show password'"
+              @click="showPasswordConfirmation = !showPasswordConfirmation"
+            >
+              <svg
+                v-if="showPasswordConfirmation"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg
+                v-else
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.24 4.24M9.36 5.35A9.72 9.72 0 0 1 12 5c6.5 0 10 7 10 7a13.16 13.16 0 0 1-3.16 3.94M6.6 6.6C3.9 8.28 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 3.4-.6"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
         <button
           type="submit"
